@@ -10,16 +10,63 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+    @IBOutlet weak var logoImage: UIImageView!
+    @IBOutlet weak var playButton: UIButton!
+    @IBOutlet weak var addButton: UIButton!
+    @IBOutlet weak var multipleText: UITextField!
+    @IBOutlet weak var resultLabel: UILabel!
+    
+    let maxValue: Int = 200
+    var lastTotal: Int = 0
+    var currentTotal: Int = 0
+    var multipleValue: Int = 0
+    
+    @IBAction func onAddButtonPressed(sender: UIButton!) {
+        if isTotalUptoMaxValue() {
+            resetValues()
+            toggleControls()
+        } else {
+            lastTotal = currentTotal
+            currentTotal = lastTotal + multipleValue
+            
+            updateResultLabel()
+        }
+    }
+    
+    @IBAction func onPlayButtonPressed(sender: UIButton!) {
+        if multipleText.text != nil && multipleText.text != "" {
+            toggleControls()
+            multipleValue = Int(multipleText.text!)!
+        }
+    }
+    
+    func resetValues() {
+        resultLabel.text = "Press Add to add!"
+        multipleText.text = nil
+                
+        lastTotal = 0
+        currentTotal = 0
+        multipleValue = 0
+    }
+    
+    func updateResultLabel() {
+        resultLabel.text = "\(lastTotal) + \(multipleValue) = \(currentTotal)"
+    }
+    
+    func isTotalUptoMaxValue() -> Bool {
+        if currentTotal >= maxValue {
+            return true
+        }
+        return false
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func toggleControls() {
+        logoImage.hidden = !logoImage.hidden
+        playButton.hidden = !playButton.hidden
+        multipleText.hidden = !multipleText.hidden
+        
+        resultLabel.hidden = !resultLabel.hidden
+        addButton.hidden = !addButton.hidden
     }
-
-
 }
 
